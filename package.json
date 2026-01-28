@@ -41,11 +41,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/morphaxl/subtitle-translator.git"
+    "url": "git+https://github.com/morphaxl/subtitle-translator-ai.git"
   },
-  "homepage": "https://github.com/morphaxl/subtitle-translator#readme",
+  "homepage": "https://github.com/morphaxl/subtitle-translator-ai#readme",
   "bugs": {
-    "url": "https://github.com/morphaxl/subtitle-translator/issues"
+    "url": "https://github.com/morphaxl/subtitle-translator-ai/issues"
   },
   "engines": {
     "node": ">=18.0.0"

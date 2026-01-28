@@ -16,7 +16,7 @@ Multi-provider AI subtitle translator with support for **OpenAI**, **Anthropic**
 
 ```bash
 # Clone and install
-git clone https://github.com/morphaxl/subtitle-translator.git
+git clone https://github.com/morphaxl/subtitle-translator-ai-ai.git
 cd subtitle-translator
 pnpm install
 
