@@ -1,35 +1,6 @@
 # Subtitle Translator AI
 
-**Free local transcription** with Whisper + AI-powered translation with OpenAI, Anthropic, Gemini, and more.
-
-## Highlight: Free Transcription with Whisper
-
-Generate subtitles from any video/audio **completely free** using OpenAI's Whisper locally:
-
-```bash
-# Install Whisper (one-time)
-pip install -U openai-whisper
-brew install ffmpeg
-
-# Transcribe any video to subtitles - FREE!
-pnpm run transcribe movie.mp4
-
-# Translate foreign audio to English - FREE!
-pnpm run transcribe japanese_movie.mp4 --translate
-```
-
-No API keys. No costs. Runs entirely on your machine.
-
----
-
-## Features
-
-- **Free Whisper transcription** - Generate subtitles from audio/video locally
-- **Multi-provider translation** - OpenAI, Anthropic, Gemini, Kimi
-- **Auto-detection** - Automatically picks provider from API key
-- **Multi-format** - SRT, VTT, ASS/SSA input and output
-- **Video extraction** - Extract existing subtitles from MKV/MP4
-- **Batch processing** - Translate multiple files with YAML config
+Translate subtitles to **any language** using AI. Supports OpenAI, Anthropic, Gemini, and Kimi.
 
 ## Quick Start
 
@@ -39,67 +10,54 @@ git clone https://github.com/morphaxl/subtitle-translator-ai.git
 cd subtitle-translator-ai
 pnpm install
 
-# FREE: Transcribe video to subtitles with Whisper
-pnpm run transcribe movie.mp4
-
-# Or translate existing subtitles (requires API key)
+# Set your API key (pick one)
 export OPENAI_API_KEY=sk-...
+# or ANTHROPIC_API_KEY, GEMINI_API_KEY, KIMI_API_KEY
+
+# Translate!
 pnpm run translate movie.srt --to Spanish
 ```
 
+## Features
+
+- **Multi-provider** - OpenAI, Anthropic, Gemini, Kimi
+- **Auto-detection** - Picks provider from API key automatically
+- **Multi-format** - SRT, VTT, ASS/SSA
+- **Video extraction** - Extract subtitles from MKV/MP4
+- **Batch processing** - Translate multiple files at once
+- **Whisper support** - Free local transcription (generates subtitles from audio)
+
 ---
 
-## Whisper Transcription (FREE)
+## Translation
 
-### Generate Subtitles from Video/Audio
+### Translate Subtitles
 
 ```bash
-pnpm run transcribe <video/audio> [options]
+pnpm run translate <input> [options]
 
 Options:
-  -m, --model <model>      tiny, base, small, medium, large (default: base)
-  -l, --language <lang>    Source language (auto-detected if omitted)
-  --translate              Translate to English
-  -f, --format <fmt>       Output: srt, vtt, txt, json (default: srt)
-  -o, --output <dir>       Output directory
-  --list-models            Show available models
+  -t, --to <lang>          Target language (default: Hindi)
+  -f, --from <lang>        Source language (default: English)
+  -p, --provider <name>    openai, anthropic, gemini, kimi
+  -o, --output <path>      Output file path
+  -b, --batch-size <n>     Subtitles per batch (default: 500)
 ```
 
 ### Examples
 
 ```bash
-# Basic transcription (same language)
-pnpm run transcribe podcast.mp3
+# Translate to Turkish
+pnpm run translate movie.srt --to Turkish
 
-# Higher quality transcription
-pnpm run transcribe movie.mp4 --model medium
+# Use specific provider
+pnpm run translate movie.srt --to Japanese --provider anthropic
 
-# Foreign video → English subtitles (FREE!)
-pnpm run transcribe korean_drama.mkv --translate --model medium
-
-# List available models
-pnpm run transcribe --list-models
+# Different source language
+pnpm run translate spanish.srt --from Spanish --to English
 ```
 
-### Whisper Models
-
-| Model | Speed | Quality | VRAM | Use Case |
-|-------|-------|---------|------|----------|
-| tiny | ~10x | ★★☆☆☆ | ~1GB | Quick drafts |
-| base | ~7x | ★★★☆☆ | ~1GB | **Recommended** |
-| small | ~4x | ★★★★☆ | ~2GB | Better accuracy |
-| medium | ~2x | ★★★★★ | ~5GB | High quality, translation |
-| large | 1x | ★★★★★ | ~10GB | Best accuracy |
-
-> **Note**: Whisper translates only **TO English**. For other languages, use AI providers below.
-
----
-
-## AI Translation (Paid Providers)
-
-For translating subtitles to any language, use AI providers:
-
-### Available Providers
+### Providers
 
 | Provider | Default Model | Pricing |
 |----------|---------------|---------|
@@ -108,41 +66,25 @@ For translating subtitles to any language, use AI providers:
 | Gemini | gemini-2.0-flash | Per token |
 | Kimi | kimi-for-coding | Per request |
 
-### Setup
-
+Set API key via environment:
 ```bash
-# Set one API key
 export OPENAI_API_KEY=sk-...
-# or ANTHROPIC_API_KEY, GEMINI_API_KEY, KIMI_API_KEY
-
-# Translate
-pnpm run translate movie.srt --to Spanish
-```
-
-### Translation Examples
-
-```bash
-# Auto-detect provider from environment
-pnpm run translate movie.srt --to Japanese
-
-# Use specific provider
-pnpm run translate movie.srt --to Korean --provider anthropic
-
-# Custom batch size (default: 500)
-pnpm run translate movie.srt --to Hindi --batch-size 200
+export ANTHROPIC_API_KEY=sk-ant-...
+export GEMINI_API_KEY=AIza...
+export KIMI_API_KEY=sk-kimi-...
 ```
 
 ---
 
-## Extract Subtitles from Video
+## Extract from Video
 
 Extract embedded subtitles from MKV/MP4/AVI:
 
 ```bash
-# List available subtitle streams
+# List subtitle streams
 pnpm run extract movie.mkv --list
 
-# Extract specific stream
+# Extract stream 0
 pnpm run extract movie.mkv --stream 0
 
 # Extract all streams
@@ -151,36 +93,45 @@ pnpm run extract movie.mkv --all
 
 ---
 
-## Complete Workflows
+## Whisper Transcription
 
-### Video Without Subtitles → Translated Subtitles
+Generate subtitles from audio/video using Whisper (runs locally, free):
 
 ```bash
-# 1. Generate English subtitles with Whisper (FREE)
+# Install Whisper first
+pip install -U openai-whisper
+
+# Transcribe video to subtitles
+pnpm run transcribe movie.mp4
+
+# Use better model
 pnpm run transcribe movie.mp4 --model medium
-
-# 2. Translate to target language
-pnpm run translate movie.srt --to Turkish
 ```
 
-### Foreign Video → Your Language
+> **Note**: Whisper can only translate **to English**. For other languages, transcribe first then use AI translation.
+
+---
+
+## Complete Workflow
+
+### MKV → Translated Subtitles
 
 ```bash
-# 1. Transcribe + translate to English with Whisper (FREE)
-pnpm run transcribe foreign_movie.mp4 --translate --model medium
-
-# 2. Translate English to your language
-pnpm run translate foreign_movie.srt --to Hindi
-```
-
-### MKV with Embedded Subtitles → Translated
-
-```bash
-# 1. Extract existing subtitles
+# 1. Extract subtitles
 pnpm run extract movie.mkv --stream 0 -o movie.srt
 
 # 2. Translate
-pnpm run translate movie.srt --to Spanish
+pnpm run translate movie.srt --to Turkish
+```
+
+### Video Without Subtitles → Translated
+
+```bash
+# 1. Generate subtitles with Whisper
+pnpm run transcribe movie.mp4
+
+# 2. Translate
+pnpm run translate movie.srt --to Hindi
 ```
 
 ---
@@ -191,8 +142,7 @@ pnpm run translate movie.srt --to Spanish
 # Create config
 pnpm run init
 
-# Edit jobs.yaml
-# Run all jobs
+# Edit jobs.yaml, then run
 pnpm run batch
 ```
 
@@ -204,7 +154,7 @@ defaults:
 jobs:
   - input: movie.srt
     to: Spanish
-  - input: movie.srt  
+  - input: movie.srt
     to: French
   - input: movie.srt
     to: Japanese
@@ -214,41 +164,21 @@ jobs:
 
 ## Installation
 
-### Prerequisites
-
-- **Node.js 18+**
-- **ffmpeg** - for video processing
-- **Whisper** - for free transcription (optional)
-
 ```bash
-# Install ffmpeg
-brew install ffmpeg        # macOS
-sudo apt install ffmpeg    # Linux
+# Required
+pnpm install
+brew install ffmpeg  # or: apt install ffmpeg
 
-# Install Whisper (for free transcription)
+# Optional (for Whisper transcription)
 pip install -U openai-whisper
 ```
 
-### Setup
-
-```bash
-git clone https://github.com/morphaxl/subtitle-translator-ai.git
-cd subtitle-translator-ai
-pnpm install
-```
-
----
-
 ## API Keys
 
-Only needed for AI translation (not for Whisper):
-
 - **OpenAI**: https://platform.openai.com/api-keys
-- **Anthropic**: https://console.anthropic.com/settings/keys  
+- **Anthropic**: https://console.anthropic.com/settings/keys
 - **Gemini**: https://aistudio.google.com/apikey
 - **Kimi**: https://kimi.com/coding/profile
-
----
 
 ## License
 
