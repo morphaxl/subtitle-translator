@@ -265,7 +265,7 @@ program
   .option('-p, --provider <name>', 'AI provider: openai, anthropic, gemini, kimi')
   .option('-k, --api-key <key>', 'API key (or set via environment variable)')
   .option('-m, --model <model>', 'Model to use (provider-specific)')
-  .option('-b, --batch-size <n>', 'Subtitles per batch', '100')
+  .option('-b, --batch-size <n>', 'Subtitles per batch', '500')
   .option('--base-url <url>', 'Custom API base URL')
   .option('--max-retries <n>', 'Max retries per request', '3')
   .option('--delay <ms>', 'Delay between batches in ms', '300')
@@ -464,7 +464,7 @@ program
             targetLang: resolveLanguage(job.to),
           });
 
-          const batches = batchSubtitles(subtitles, 100);
+          const batches = batchSubtitles(subtitles, 500);
           const translatedSubtitles: Subtitle[] = [...subtitles];
 
           const progressBar = new cliProgress.SingleBar({
