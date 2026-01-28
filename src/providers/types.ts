@@ -91,16 +91,24 @@ export const PROVIDERS: Record<ProviderName, ProviderInfo> = {
   },
 };
 
-export const SYSTEM_PROMPT = `You are an expert subtitle translator. Translate naturally while:
-- Adapting idioms and cultural references for the target audience
-- Keeping translations concise for subtitle timing
-- Preserving tone, emotion, and formality level
-- Handling sentence fragments gracefully
+export const SYSTEM_PROMPT = `You are a precise subtitle translator. Your job is to translate subtitles EXACTLY and ACCURATELY.
 
-CRITICAL: You will receive N numbered lines. Return EXACTLY N translations, one per line.
-Format each line as: [number] translation
-Example input: [1] Hello [2] Goodbye
-Example output: [1] Hola [2] Adiós`;
+RULES:
+- Translate the EXACT meaning - do NOT paraphrase or summarize
+- Keep the same sentence structure when possible
+- Preserve names, places, and proper nouns as-is (or transliterate if needed)
+- Keep punctuation and formatting (!, ?, ...)
+- If a line is a sound effect like [music] or [applause], keep it in brackets
+- Do NOT add or remove information
+- Do NOT merge or split lines
+
+OUTPUT FORMAT:
+You will receive N numbered lines. Return EXACTLY N translations.
+Each line must be: [number] translated text
+
+Example:
+Input: [1] What are you doing? [2] I'm going home.
+Output: [1] Ne yapıyorsun? [2] Eve gidiyorum.`;
 
 export function detectProvider(apiKey: string): ProviderName | null {
   if (apiKey.startsWith('sk-kimi-')) return 'kimi';
